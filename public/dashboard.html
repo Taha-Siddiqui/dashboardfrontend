@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Regional Offices Budget Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css?v=3" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.3/chart.umd.min.js"></script>
+</head>
+<body class="app-body">
+
+<header class="app-header">
+  <div class="brand">
+    <span class="brand-seal">BE</span>
+    <div>
+      <h1>Regional Offices Budget Dashboard</h1>
+      <p id="source-status" class="source-status">Loading data source…</p>
+    </div>
+  </div>
+  <div class="header-actions">
+    <button id="refresh-btn" class="ghost-btn" title="Re-fetch from Google Sheets">⟳ Refresh data</button>
+    <span id="user-name" class="user-name"></span>
+    <button id="logout-btn" class="ghost-btn">Sign out</button>
+  </div>
+</header>
+
+<div class="app-shell">
+
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <h2>Offices</h2>
+      <input id="office-search" type="text" placeholder="Filter offices…" class="text-input" />
+      <div id="office-groups" class="office-groups">
+        <p class="muted">Loading offices…</p>
+      </div>
+      <div class="sidebar-buttons">
+        <button id="select-none" class="link-btn">Clear</button>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <h2>Category</h2>
+      <div id="category-list" class="category-list">
+        <p class="muted">Loading categories…</p>
+      </div>
+
+      <div id="item-picker" class="dropdown-wrap" hidden>
+        <p class="picker-label">Items in this category</p>
+        <button type="button" id="item-picker-toggle" class="dropdown-toggle">
+          <span id="item-picker-toggle-label">All items</span>
+          <span class="chev">▾</span>
+        </button>
+        <div id="item-picker-panel" class="dropdown-panel" hidden>
+          <div class="dropdown-panel-actions">
+            <button type="button" class="link-btn" id="item-select-all">Select all</button>
+            <button type="button" class="link-btn" id="item-select-clear">Clear</button>
+          </div>
+          <div id="item-picker-list" class="dropdown-checklist"></div>
+          <button type="button" class="dropdown-done-btn" id="item-picker-done">Done</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <h2>Search line items</h2>
+      <input id="item-search" type="text" placeholder="e.g. Driver, House Rent…" class="text-input" />
+    </div>
+
+    <div class="sidebar-section">
+      <h2>Columns</h2>
+      <p class="picker-label">Code &amp; Description are always shown</p>
+      <div class="dropdown-wrap">
+        <button type="button" id="column-picker-toggle" class="dropdown-toggle">
+          <span id="column-picker-toggle-label">Columns</span>
+          <span class="chev">▾</span>
+        </button>
+        <div id="column-picker-panel" class="dropdown-panel" hidden>
+          <div class="dropdown-panel-actions">
+            <button type="button" class="link-btn" id="column-select-all">Select all</button>
+            <button type="button" class="link-btn" id="column-select-default">Default</button>
+          </div>
+          <div id="column-picker-list" class="dropdown-checklist"></div>
+          <button type="button" class="dropdown-done-btn" id="column-picker-done">Done</button>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main-panel">
+
+    <div id="error-banner" class="error-banner" hidden></div>
+    <div id="double-count-warning" class="caution-banner" hidden></div>
+
+    <div class="stat-controls">
+      <div class="dropdown-wrap" id="stat-picker-wrap">
+        <button type="button" id="stat-picker-toggle" class="dropdown-toggle small-toggle">
+          <span id="stat-picker-toggle-label">Totals shown</span>
+          <span class="chev">▾</span>
+        </button>
+        <div id="stat-picker-panel" class="dropdown-panel" hidden>
+          <div class="dropdown-panel-actions">
+            <button type="button" class="link-btn" id="stat-select-all">Select all</button>
+            <button type="button" class="link-btn" id="stat-select-default">Default</button>
+          </div>
+          <div id="stat-picker-list" class="dropdown-checklist"></div>
+          <button type="button" class="dropdown-done-btn" id="stat-picker-done">Done</button>
+        </div>
+      </div>
+    </div>
+
+    <section class="stat-row" id="stat-row"></section>
+
+    <div class="view-tabs">
+      <button class="view-tab active" data-view="browse">Browse</button>
+      <button class="view-tab" data-view="compare">Compare offices</button>
+    </div>
+
+    <!-- BROWSE VIEW -->
+    <section id="browse-view" class="view">
+      <div id="office-tables"></div>
+    </section>
+
+    <!-- COMPARE VIEW -->
+    <section id="compare-view" class="view" hidden>
+      <div class="compare-controls">
+        <label for="metric-select">Compare by:</label>
+        <select id="metric-select"></select>
+      </div>
+      <div class="chart-card">
+        <canvas id="compare-chart" height="90"></canvas>
+      </div>
+      <div id="compare-table-wrap"></div>
+    </section>
+
+  </main>
+</div>
+
+<script src="js/dashboard.js?v=3"></script>
+</body>
+</html>

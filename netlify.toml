@@ -1,0 +1,28 @@
+[build]
+  publish = "public"
+  functions = "netlify/functions"
+  command = "npm install"
+
+[functions]
+  node_bundler = "esbuild"
+
+# Send every /api/* request to our single Express function.
+# The function itself restores the original /api/... path (see
+# netlify/functions/api.js), so all existing routes work unchanged.
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+
+# Always revalidate JS/CSS with the server instead of trusting a stale local
+# cache - this is what previously made a fixed bug look like it hadn't
+# actually been deployed yet.
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "no-cache, must-revalidate"
+
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "no-cache, must-revalidate"
